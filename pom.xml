@@ -14,6 +14,9 @@
         <module>dependencies</module>
         <!-- 注册中心 -->
         <module>registry</module>
+        <module>biz</module>
+        <module>gateway</module>
+        <module>common</module>
     </modules>
 
     <description>spring-cloud 使用样例</description>
