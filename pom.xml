@@ -17,6 +17,7 @@
         <module>biz</module>
         <module>gateway</module>
         <module>common</module>
+        <module>h2db</module>
     </modules>
 
     <description>spring-cloud 使用样例</description>
