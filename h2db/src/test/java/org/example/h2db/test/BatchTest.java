@@ -16,7 +16,7 @@ public class BatchTest {
 
     public static void main(String[] args) throws SQLException, InterruptedException {
         // 使用连接池
-        String url = "jdbc:h2:tcp://localhost:8000/~/h2/test";
+        String url = "jdbc:h2:tcp://localhost:9092/~/h2/test";
         JdbcConnectionPool connectionPool = JdbcConnectionPool.create(url, "", "");
 
 //        Db.use(connectionPool).execute("delete from test");
