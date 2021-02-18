@@ -13,7 +13,7 @@ public class HutoolTest {
 
     public static void main(String[] args) throws SQLException {
         // 使用连接池
-        String url = "jdbc:h2:tcp://localhost:9092/~/h2/test";
+        String url = "jdbc:h2:tcp://localhost:8000/~/h2/test";
         JdbcConnectionPool connectionPool = JdbcConnectionPool.create(url, "", "");
         // 插入数据
         Db.use(connectionPool).insert(
@@ -26,9 +26,7 @@ public class HutoolTest {
         // 查询数据
         List<Entity> entityList = Db.use(connectionPool).findAll(Entity.create("test").set("name", "hutool"));
         entityList.forEach(entity ->
-                System.out.println(
-                        String.format("id: %s, name: %s", entity.getStr("ID"), entity.getStr("NAME"))
-                )
+                System.out.printf("id: %s, name: %s%n", entity.getStr("ID"), entity.getStr("NAME"))
         );
 
         // 事务

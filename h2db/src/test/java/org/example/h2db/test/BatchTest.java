@@ -16,13 +16,14 @@ public class BatchTest {
 
     public static void main(String[] args) throws SQLException, InterruptedException {
         // 使用连接池
-        String url = "jdbc:h2:tcp://localhost:9092/~/h2/test";
+        String url = "jdbc:h2:tcp://localhost:8000/~/h2/test";
         JdbcConnectionPool connectionPool = JdbcConnectionPool.create(url, "", "");
 
 //        Db.use(connectionPool).execute("delete from test");
 
+        long l = Db.use(connectionPool).count(Entity.create("test"));
         // 插入数据
-        AtomicInteger count = new AtomicInteger();
+        AtomicInteger count = new AtomicInteger((int) l);
         int size = 1_000_000;
         CountDownLatch countDownLatch = new CountDownLatch(size);
         long start = System.currentTimeMillis();
@@ -42,12 +43,12 @@ public class BatchTest {
             });
         }
         countDownLatch.await();
-        System.out.println(String.format("insert elapse: %s", (System.currentTimeMillis() - start)));
+        System.out.printf("insert elapse: %s%n", (System.currentTimeMillis() - start));
 
         start = System.currentTimeMillis();
         List<Entity> list = Db.use(connectionPool).findLike("test", "name", "hutool2", Condition.LikeType.Contains);
-        System.out.println(String.format("query elapse: %s", (System.currentTimeMillis() - start)));
-        System.out.println(String.format("query size: %s", list.size()));
+        System.out.printf("query elapse: %s%n", (System.currentTimeMillis() - start));
+        System.out.printf("query size: %s%n", list.size());
 
 //        Db.use(connectionPool).execute("delete from test");
     }

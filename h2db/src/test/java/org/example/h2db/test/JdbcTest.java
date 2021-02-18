@@ -9,7 +9,7 @@ public class JdbcTest {
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
-        try (Connection connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:9092/~/h2/test")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:h2:tcp://localhost:8000/~/h2/test")) {
             // 插入一条数据
             try (PreparedStatement pst = connection.prepareStatement("INSERT INTO TEST(ID, NAME) VALUES (?, ?)")) {
                 pst.setString(1, UUID.randomUUID().toString());
