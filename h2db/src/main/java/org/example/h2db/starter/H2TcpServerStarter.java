@@ -1,13 +1,12 @@
 package org.example.h2db.starter;
 
+import org.example.h2db.starter.server.H2TcpServer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-
-import java.sql.SQLException;
 
 public class H2TcpServerStarter {
 
-    public static void main(String[] args) throws SQLException {
-        new AnnotationConfigApplicationContext("org.example.h2demo.starter");
+    public static void main(String[] args) {
+        new AnnotationConfigApplicationContext(H2TcpServer.class);
     }
 
 }
