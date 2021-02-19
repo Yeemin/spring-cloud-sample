@@ -1,15 +1,15 @@
 package org.example.h2db.starter.server;
 
+import cn.hutool.db.Db;
 import org.h2.tools.Server;
+import org.h2.util.StringUtils;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -29,24 +29,24 @@ public class H2TcpServer implements InitializingBean {
             if (properties.isEmpty()) {
                 return;
             }
-            String driverName = "org.h2.Driver";
-            Class.forName(driverName);
-            String url = "jdbc:h2:tcp://localhost:9092/~/h2/test";
-            try (Connection connection = DriverManager.getConnection(url)) {
-                properties.forEach((k, v) -> {
-                    String dropAliasSQL = "DROP ALIAS IF EXISTS " + k;
-                    try (PreparedStatement pst = connection.prepareStatement(dropAliasSQL)) {
-                        pst.execute();
-                    } catch (SQLException ignored) {
-                    }
+            DataSource dataSource = JdbcConnectionPoolWrapper.getInstance().get();
+            properties.entrySet().parallelStream().forEach(entry -> {
+                String k = (String) entry.getKey();
+                String v = (String) entry.getValue();
+                String dropAliasSQL = "DROP ALIAS IF EXISTS " + k;
+                try {
+                    Db.use(dataSource).execute(dropAliasSQL);
+                } catch (SQLException ignored) {
+                }
+                if (!StringUtils.isNullOrEmpty(v)) {
                     String createAliasSQL = "CREATE ALIAS " + k + " FOR \"" + v + "\"";
-                    try (PreparedStatement pst = connection.prepareStatement(createAliasSQL)) {
-                        pst.execute();
+                    try {
+                        Db.use(dataSource).execute(createAliasSQL);
                     } catch (SQLException ignored) {
                     }
-                });
-            }
-        } catch (IOException | ClassNotFoundException | SQLException e) {
+                }
+            });
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

@@ -1,2 +1,14 @@
-uuid32=org.example.h2demo.starter.alias.UUIDAlias.uuid32
-capture=org.example.h2demo.starter.alias.UUIDAlias.capture
+md5=org.example.h2demo.starter.alias.DigestAlias.md5
+showCacheNames=org.example.h2demo.starter.alias.CacheAlias.showCacheNames
+hasCacheName=org.example.h2demo.starter.alias.CacheAlias.hasCacheName
+removeCacheName=org.example.h2demo.starter.alias.CacheAlias.removeCacheName
+create_fifoCache=org.example.h2demo.starter.alias.CacheAlias.fifoCache
+create_lfuCache=org.example.h2demo.starter.alias.CacheAlias.lfuCache
+create_lruCache=org.example.h2demo.starter.alias.CacheAlias.lruCache
+create_timedCache=org.example.h2demo.starter.alias.CacheAlias.timedCache
+create_weakCache=org.example.h2demo.starter.alias.CacheAlias.weakCache
+cache=org.example.h2demo.starter.alias.CacheAlias.cache
+getCache=org.example.h2demo.starter.alias.CacheAlias.getCache
+clearCache=org.example.h2demo.starter.alias.CacheAlias.clearCache
+removeCache=org.example.h2demo.starter.alias.CacheAlias.removeCache
+base64=
