@@ -1,6 +1,8 @@
 package org.example.h2db.starter.alias;
 
 import cn.hutool.db.Db;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import org.example.h2db.starter.server.JdbcConnectionPoolWrapper;
 import org.h2.util.StringUtils;
 import org.springframework.core.io.support.PropertiesLoaderUtils;
@@ -12,11 +14,14 @@ import java.util.Properties;
 
 public class AliasUtil {
 
-    public static void createAlias(String database) {
+    private static final Log log = LogFactory.get();
+
+    public static String createAlias(String database) {
         try {
             Properties properties = PropertiesLoaderUtils.loadAllProperties("alias.factories");
             if (properties.isEmpty()) {
-                return;
+                log.warn("alias.factories is empty");
+                return "alias.factories is empty";
             }
             DataSource dataSource = JdbcConnectionPoolWrapper.getInstance().get(database);
             properties.entrySet().parallelStream().forEach(entry -> {
@@ -25,19 +30,23 @@ public class AliasUtil {
                 String dropAliasSQL = "DROP ALIAS IF EXISTS " + k;
                 try {
                     Db.use(dataSource).execute(dropAliasSQL);
-                } catch (SQLException ignored) {
+                } catch (SQLException e) {
+                    log.error(e);
                 }
                 if (!StringUtils.isNullOrEmpty(v)) {
                     String createAliasSQL = "CREATE ALIAS " + k + " FOR \"" + v + "\"";
                     try {
                         Db.use(dataSource).execute(createAliasSQL);
-                    } catch (SQLException ignored) {
+                    } catch (SQLException e) {
+                        log.error(e);
                     }
                 }
             });
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e);
+            return e.getMessage();
         }
+        return "SUCCESS";
     }
 
 }

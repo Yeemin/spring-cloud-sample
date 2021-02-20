@@ -3,6 +3,8 @@ package org.example.h2db.test;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.impl.AbstractCache;
 import cn.hutool.db.Db;
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
 import org.h2.jdbcx.JdbcConnectionPool;
 
 import javax.sql.DataSource;
@@ -10,8 +12,9 @@ import java.sql.SQLException;
 
 public class CacheTest {
 
+    private static final Log log = LogFactory.get();
 
-    public static void main(String[] args) throws SQLException, InterruptedException {
+    public static void main(String[] args) {
         String url = "jdbc:h2:tcp://localhost:9092/~/h2/test";
         JdbcConnectionPool connectionPool = JdbcConnectionPool.create(url, "", "");
         connectionPool.setMaxConnections(8);
@@ -35,7 +38,7 @@ public class CacheTest {
                     Db.use(dataSource).query("CALL CREATE_LFUCACHE(?)", cacheName);
                 }
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
         }
 
@@ -48,7 +51,7 @@ public class CacheTest {
                     Db.use(dataSource).query("CALL CREATE_TIMEDCACHE(?, ?)", cacheName, timeout);
                 }
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
         }
 
@@ -61,7 +64,7 @@ public class CacheTest {
                     Db.use(dataSource).query("CALL CREATE_LFUCACHE(?, ?)", cacheName, capacity);
                 }
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
         }
 
@@ -74,7 +77,7 @@ public class CacheTest {
                     Db.use(dataSource).query("CALL CREATE_LFUCACHE(?, ?, ?)", cacheName, capacity, timeout);
                 }
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
         }
 
@@ -88,7 +91,7 @@ public class CacheTest {
             try {
                 Db.use(this.dataSource).query("SELECT CACHE(?, ?, ?)", this.cacheName, key, object);
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
         }
 
@@ -98,7 +101,7 @@ public class CacheTest {
                 return Db.use(this.dataSource).query("SELECT GETCACHE(?, ?) AS RESULT", this.cacheName, key)
                         .stream().map(entity -> entity.getStr("RESULT")).findFirst().orElse(null);
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
             return null;
         }
@@ -108,7 +111,7 @@ public class CacheTest {
             try {
                 Db.use(this.dataSource).query("SELECT REMOVECACHE(?, ?)", this.cacheName, key);
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
         }
 
@@ -117,7 +120,7 @@ public class CacheTest {
             try {
                 Db.use(this.dataSource).query("SELECT CLEARCACHE(?)", this.cacheName);
             } catch (SQLException throwables) {
-                throwables.printStackTrace();
+                log.error(throwables);
             }
         }
 

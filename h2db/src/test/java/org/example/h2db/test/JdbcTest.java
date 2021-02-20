@@ -1,11 +1,16 @@
 package org.example.h2db.test;
 
+import cn.hutool.log.Log;
+import cn.hutool.log.LogFactory;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 public class JdbcTest {
+
+    private static final Log log = LogFactory.get();
 
     public static void main(String[] args) throws ClassNotFoundException, SQLException {
         Class.forName("org.h2.Driver");
@@ -15,7 +20,7 @@ public class JdbcTest {
                 pst.setString(1, UUID.randomUUID().toString());
                 pst.setString(2, "yeemin");
                 pst.execute();
-                System.out.println("insert succeed");
+                log.info("insert succeed");
             }
             // 查询
             try (PreparedStatement pst = connection.prepareStatement("SELECT ID, NAME FROM TEST WHERE NAME = ?")) {
@@ -41,7 +46,7 @@ public class JdbcTest {
                     user = new User(resultSet.getString("ID"), resultSet.getString("NAME"));
                     userList.add(user);
                 }
-                userList.forEach(System.out::println);
+                userList.forEach(e -> log.info(e.toString()));
                 resultSet.close();
             }
 
@@ -49,7 +54,7 @@ public class JdbcTest {
             try (PreparedStatement pst = connection.prepareStatement("DELETE FROM TEST WHERE NAME = ?")) {
                 pst.setString(1, "yeemin");
                 pst.execute();
-                System.out.println("delete succeed");
+                log.info("delete succeed");
             }
         }
     }
