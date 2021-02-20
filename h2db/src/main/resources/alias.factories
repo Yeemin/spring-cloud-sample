@@ -1,3 +1,4 @@
+copy_alias=org.example.h2demo.starter.alias.CopyAlias.copy
 md5=org.example.h2demo.starter.alias.DigestAlias.md5
 showCacheNames=org.example.h2demo.starter.alias.CacheAlias.showCacheNames
 hasCacheName=org.example.h2demo.starter.alias.CacheAlias.hasCacheName
