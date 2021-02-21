@@ -7,7 +7,6 @@ import org.h2.tools.Server;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.sql.SQLException;
 
 @Service
@@ -15,8 +14,7 @@ public class H2TcpServer implements InitializingBean {
 
     private static final Log log = LogFactory.get();
 
-    @PostConstruct
-    public void startServer() throws SQLException {
+    public H2TcpServer() throws SQLException {
         Server server = Server.createTcpServer("-ifNotExists");
         server.start();
     }
